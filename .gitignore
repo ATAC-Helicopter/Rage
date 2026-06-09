@@ -32,3 +32,13 @@ Ragenut/imgui.ini
 
 # Visual Studio solution model
 **.slnx
+
+# Generated Visual Studio project files
+**.sln
+**.slnx
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+
+# Local editor runtime state
+Ragenut/imgui.ini
