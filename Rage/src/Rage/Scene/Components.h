@@ -13,6 +13,16 @@
 
 namespace Rage {
 
+	struct IDComponent
+	{
+		UUID ID;
+
+		IDComponent() = default;
+		IDComponent(const IDComponent&) = default;
+		IDComponent(const UUID& id)
+			: ID(id) {}
+	};
+
 	struct TagComponent
 	{
 		std::string Tag;
