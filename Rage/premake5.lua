@@ -77,24 +77,12 @@ filter "files:vendor/ImGuizmo/**.cpp"
 		runtime "Release"
 		symbols "on"
 
-		links
-		{
-		}
-
 	filter "configurations:Release"
 		defines "RA_RELEASE"
 		runtime "Release"
 		optimize "on"
 
-		links
-		{
-		}
-
 	filter "configurations:Dist"
 		defines "RA_DIST"
 		runtime "Release"
 		optimize "on"
-
-		links
-		{
-		}

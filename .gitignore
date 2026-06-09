@@ -16,3 +16,16 @@ bin-int/
 Rage/vendor/VulkanSDK
 Ragenut/assets/cache
 scripts/__pycache__
+
+# Generated build intermediates
+**/bin-int/
+**/*.tlog
+**/*.lastbuildstate
+**/*.obj
+**/*.pdb
+**/*.ilk
+**/*.idb
+**/*.log
+
+# Local editor/runtime state
+Ragenut/imgui.ini
