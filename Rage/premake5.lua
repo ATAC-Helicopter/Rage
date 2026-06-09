@@ -44,18 +44,21 @@ project "Rage"
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.VulkanSDK}"
 	}
+links
+{
+"Box2D",
+"GLFW",
+"Glad",
+"ImGui",
+"yaml-cpp",
+"opengl32.lib",
+"%{Library.ShaderC_Release}",
+"%{Library.SPIRV_Cross_Release}",
+"%{Library.SPIRV_Cross_GLSL_Release}"
+}
 
-	links
-	{
-		"Box2D",
-		"GLFW",
-		"Glad",
-		"ImGui",
-		"yaml-cpp",
-		"opengl32.lib"
-	}
+filter "files:vendor/ImGuizmo/**.cpp"
 
-	filter "files:vendor/ImGuizmo/**.cpp"
 	flags { "NoPCH" }
 
 	filter "system:windows"
@@ -66,13 +69,16 @@ project "Rage"
 		}
 
 	filter "configurations:Debug"
-		defines "RA_DEBUG"
-		runtime "Debug"
+		defines
+		{
+			"RA_DEBUG",
+			"_ITERATOR_DEBUG_LEVEL=0"
+		}
+		runtime "Release"
 		symbols "on"
 
 		links
 		{
-					"%{Library.SPIRV_Cross_GLSL_Debug}"
 		}
 
 	filter "configurations:Release"
@@ -82,7 +88,6 @@ project "Rage"
 
 		links
 		{
-					"%{Library.SPIRV_Cross_GLSL_Release}"
 		}
 
 	filter "configurations:Dist"
@@ -92,5 +97,4 @@ project "Rage"
 
 		links
 		{
-					"%{Library.SPIRV_Cross_GLSL_Release}"
 		}

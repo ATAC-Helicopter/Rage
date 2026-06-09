@@ -32,8 +32,12 @@ project "Ragenut"
 		systemversion "latest"
 
 	filter "configurations:Debug"
-		defines "RA_DEBUG"
-		runtime "Debug"
+		defines
+		{
+			"RA_DEBUG",
+			"_ITERATOR_DEBUG_LEVEL=0"
+		}
+		runtime "Release"
 		symbols "on"
 		
 		postbuildcommands
