@@ -1,0 +1,35 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Rage: Generate Projects",
+      "type": "shell",
+      "command": "pushd scripts; python Setup.py; popd",
+      "problemMatcher": []
+    },
+    {
+      "label": "Rage: Build Release x64",
+      "type": "shell",
+      "command": "powershell -ExecutionPolicy Bypass -File scripts/BuildRelease.ps1",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": "$msCompile",
+      "dependsOn": "Rage: Generate Projects"
+    },
+    {
+      "label": "Rage: Run Ragenut",
+      "type": "shell",
+      "command": "powershell -ExecutionPolicy Bypass -File scripts/RunRagenut.ps1",
+      "problemMatcher": [],
+      "dependsOn": "Rage: Build Release x64"
+    },
+    {
+      "label": "Rage: Clean Generated Build Files",
+      "type": "shell",
+      "command": "Remove-Item -Recurse -Force bin, bin-int, .vs -ErrorAction SilentlyContinue",
+      "problemMatcher": []
+    }
+  ]
+}
