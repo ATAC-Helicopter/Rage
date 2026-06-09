@@ -6,6 +6,8 @@
 
 #include "entt.hpp"
 
+#include <memory>
+
 class b2World;
 
 namespace Rage {
@@ -40,7 +42,7 @@ namespace Rage {
 
 		entt::entity m_SceneEntity;
 
-		b2World* m_Box2DWorld = nullptr;
+		std::unique_ptr<b2World> m_Box2DWorld;
 
 		friend class Entity;
 		friend class SceneSerializer;

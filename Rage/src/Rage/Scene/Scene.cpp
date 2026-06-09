@@ -5,6 +5,8 @@
 #include "Rage/Renderer/Renderer2D.h"
 
 #include <glm/glm.hpp>
+
+#include <type_traits>
 #include "box2d/b2_world.h"
 #include "box2d/b2_body.h"
 #include "box2d/b2_polygon_shape.h"
@@ -32,6 +34,9 @@ namespace Rage {
 			case Rigidbody2DComponent::BodyType::Dynamic:   return b2_dynamicBody;
 			case Rigidbody2DComponent::BodyType::Kinematic: return b2_kinematicBody;
 		}
+
+		RA_CORE_ASSERT(false, "Unknown Rigidbody2D body type");
+		return b2_staticBody;
 	}
 
 	Scene::Scene()
@@ -73,7 +78,7 @@ namespace Rage {
 		s_ActiveScenes[m_SceneID] = this;
 
 		// Create physics world and add bodies
-		m_Box2DWorld = new b2World({ 0.0f, -9.8f });
+		m_Box2DWorld = std::make_unique<b2World>(b2Vec2{ 0.0f, -9.8f });
 		auto view = m_Registry.view<Rigidbody2DComponent>();
 		for (auto e : view)
 		{
@@ -112,8 +117,7 @@ namespace Rage {
 	{
 		// destroy box2d world
 		s_ActiveScenes.erase(m_SceneID);
-		delete m_Box2DWorld;
-		m_Box2DWorld = nullptr;
+		m_Box2DWorld.reset();
 	}
 
 	void Scene::OnUpdateRuntime(Timestep ts)
@@ -135,6 +139,7 @@ namespace Rage {
 		}
 
 		// Update physics
+		if (m_Box2DWorld)
 		{
 			const int32_t velocityIterations = 6;
 			const int32_t positionIterations = 2;
