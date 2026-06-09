@@ -21,6 +21,9 @@ namespace Rage {
 
 	static std::unordered_map<UUID, Scene*> s_ActiveScenes;
 
+	template<typename T>
+	struct AlwaysFalse : std::false_type {};
+
 	static b2BodyType RageRigidbody2DTypeToBox2D(Rigidbody2DComponent::BodyType bodyType)
 	{
 		switch (bodyType)
@@ -44,10 +47,18 @@ namespace Rage {
 
 	Entity Scene::CreateEntity(const std::string& name)
 	{
+		return CreateEntityWithUUID(UUID(), name);
+	}
+
+	Entity Scene::CreateEntityWithUUID(UUID uuid, const std::string& name)
+	{
 		Entity entity = { m_Registry.create(), this };
+		entity.AddComponent<IDComponent>(uuid);
 		entity.AddComponent<TransformComponent>();
+
 		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Entity" : name;
+
 		return entity;
 	}
 
@@ -60,7 +71,7 @@ namespace Rage {
 	{
 		// create box2d world
 		s_ActiveScenes[m_SceneID] = this;
-		
+
 		// Create physics world and add bodies
 		m_Box2DWorld = new b2World({ 0.0f, -9.8f });
 		auto view = m_Registry.view<Rigidbody2DComponent>();
@@ -153,7 +164,7 @@ namespace Rage {
 			for (auto entity : view)
 			{
 				auto [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
-				
+
 				if (camera.Primary)
 				{
 					mainCamera = &camera.Camera;
@@ -226,7 +237,12 @@ namespace Rage {
 	template<typename T>
 	void Scene::OnComponentAdded(Entity entity, T& component)
 	{
-		static_assert(false);
+		static_assert(AlwaysFalse<T>::value, "Unsupported component type.");
+	}
+
+	template<>
+	void Scene::OnComponentAdded<IDComponent>(Entity entity, IDComponent& component)
+	{
 	}
 
 	template<>

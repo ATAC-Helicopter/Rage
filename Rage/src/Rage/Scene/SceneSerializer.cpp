@@ -140,7 +140,8 @@ namespace Rage {
 	static void SerializeEntity(YAML::Emitter& out, Entity entity)
 	{
 		out << YAML::BeginMap; // Entity
-		out << YAML::Key << "Entity" << YAML::Value << "12837192831273"; // TODO: Entity ID goes here
+		auto& idComponent = entity.GetComponent<IDComponent>();
+		out << YAML::Key << "Entity" << YAML::Value << (uint64_t)idComponent.ID;
 
 		if (entity.HasComponent<TagComponent>())
 		{
@@ -292,7 +293,7 @@ namespace Rage {
 
 				RA_CORE_TRACE("Deserialized entity with ID = {0}, name = {1}", uuid, name);
 
-				Entity deserializedEntity = m_Scene->CreateEntity(name);
+				Entity deserializedEntity = m_Scene->CreateEntityWithUUID(uuid, name);
 
 				auto transformComponent = entity["TransformComponent"];
 				if (transformComponent)
