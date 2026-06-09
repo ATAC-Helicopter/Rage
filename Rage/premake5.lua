@@ -59,7 +59,8 @@ links
 
 filter "files:vendor/ImGuizmo/**.cpp"
 
-	flags { "NoPCH" }
+
+	enablepch "Off"
 
 	filter "system:windows"
 		systemversion "latest"

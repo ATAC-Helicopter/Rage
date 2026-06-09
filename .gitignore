@@ -29,3 +29,6 @@ scripts/__pycache__
 
 # Local editor/runtime state
 Ragenut/imgui.ini
+
+# Visual Studio solution model
+**.slnx
